@@ -12,42 +12,45 @@
 package com.baihui.docs4baidu.onlineoa.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 功能描述：
  *
- * @author xiayouxue
- * @version version 1.0
- * @ClassName:com.baihui.docs4baidu.onlineoa.controller.ZohoController.java
- * @company 北京百会纵横科技有限公司</p>
- * @copyright 本文件归属 北京百会纵横科技有限公司</p>
- * @since(该版本支持的 JDK 版本) ： 1.6
- * @date 2014-03-25 16:07
- * @modify version 1.0
  */
 @Controller
 @RequestMapping(value = "/onlineoa/zoho")
 public class ZohoController {
 
-    public final static String XIEXIE_URL = "https://xiexie.baihui.com/remotedoc.im";
-    public final static String SHEET_URL = "https://xiexie.baihui.com/remotedoc.im";
-    public final static String XIUXIU_URL = "https://xiexie.baihui.com/remotedoc.im";
-    public final static String APIKEY = "b55679812fe378dc4c288a47dbced340";
+//    public final static String XIEXIE_URL = "https://xiexie.baihui.com/remotedoc.im";
+//    public final static String SHEET_URL = "https://xiexie.baihui.com/remotedoc.im";
+//    public final static String XIUXIU_URL = "https://xiexie.baihui.com/remotedoc.im";
+//    public final static String APIKEY = "b55679812fe378dc4c288a47dbced340";
 
-    @RequestMapping(value = "/filelist")
-    public String fileList(HttpServletRequest request) {
+    @PostConstruct
+    public void init(){
+
+    }
+
+    @ModelAttribute(value = "files")
+    public List<File> fileList(HttpServletRequest request) {
         File file = new File(request.getSession().getServletContext().getRealPath(request.getContextPath()) + "/upload");
         if (!file.exists()) file.mkdirs();
+
+        return new ArrayList<File>();
+    }
+
+    @RequestMapping(value = "/filelist")
+    public String fileList() {
 
         return "/onlineoa/zoho/fileList";
     }
@@ -77,7 +80,7 @@ public class ZohoController {
     }
 
     @RequestMapping(value = "/edit")
-    public String edit(){
+    public String edit() {
         return "/onlineoa/zoho/fileList";
     }
 
