@@ -1,33 +1,31 @@
 <%--
-  文件列表
-  1.上传
-    上传目录：应用/upload
-  2.文件列表
-    读取上传目录下文件
-    仅显示文件，忽略文件夹
-  3.下载
+  zoho在线办公功能
+  1.文件列表
+    读取子文件{文件类型的}
+  2.文件上传
+    上传目录：${ctx}/upload
+  3.文件下载
     文件名称
-  4.编辑
+  4.文件编辑
     文件名称
-
-
   User: xiayouxue
   Date: 14-3-25
-  Time: 下午5:23
+  Time: 下午6:08
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
 <html>
 <head>
-    <title>文件列表</title>
+    <title>zoho在线办公功能</title>
 </head>
 <body>
-.
+
 <fieldset>
-    <legend>上传文件</legend>
-    <form method="POST" action="${ctx}/onlineoa/zoho/upload" enctype="multipart/form-data" target="_blank">
-        <input type="file" name="file"><input type="submit" value="upload">
+    <legend>文件上传</legend>
+    <form method="POST" action="${ctx}/onlineoa/zoho/file/upload" enctype="multipart/form-data">
+        <input type="file" name="filePath"><input type="submit" value="upload">
     </form>
 </fieldset>
 
@@ -42,13 +40,13 @@
             <tr>
                 <td>${file.name}</td>
                 <td>
-                    <a href="${ctx}/upload/${file.name}">下载</a>
-                    <a href="${ctx}/upload/${file.name}">编辑</a>
+                    <a href="${ctx}/onlineoa/zoho/file/delete?name=${file.name}">删除</a>
+                    <a href="${ctx}/onlineoa/zoho/file/download?name=${file.name}">下载</a>
+                    <a href="${ctx}/onlineoa/zoho/file/edit?name=${file.name}" target="_blank">编辑</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
 </fieldset>
-
 </body>
 </html>
