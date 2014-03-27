@@ -22,6 +22,6 @@
         <appender-ref ref="rootRolling"/>
     </root>
 
-    <logger name="com.baihui.docs4baidu" level="debug"/>
+    <logger name="com.baihui.docs4baidu" level="debug" />
 
 </configuration>

@@ -1,5 +1,5 @@
 <%--
-  zoho在线办公功能
+  zoho在线办公
   1.文件列表
     读取子文件{文件类型的}
   2.文件上传
@@ -15,7 +15,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-
+<%
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    pageContext.setAttribute("basePath", basePath);
+%>
 <html>
 <head>
     <title>zoho在线办公功能</title>
@@ -23,9 +26,41 @@
 <body>
 
 <fieldset>
+    <legend>本地编辑</legend>
+    <div>从本地上传文件到服务端，编辑后导出到本地</div>
+    <form method="post"
+          action="https://xiexie.baihui.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        <input type="file" name="content" size="38">
+        <input type="text" name="filename">
+        <input type="text" name="format" value="doc">
+        <input type="submit" name="submit" value="编辑">
+        <input type="hidden" name="saveurl" value="http://ceshi.baihui.com/docs4baidu/onlineoa/zoho/file/save">
+        <input type="hidden" name="id" value="12345678doc">
+        <input type="hidden" name="persistence" value="false">
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend>云端编辑</legend>
+    <div>指定一个云端地址，编辑后保存到云端</div>
+    <form method="post"
+          action="https://xiexie.baihui.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        <input type="text" name="url" value="${basePath}/onlineoa/zoho/file/download?name=" style="width: 50em">
+        <input type="text" name="filename">
+        <input type="text" name="format" value="doc">
+        <input type="submit" name="submit" value="编辑"> <span>内网|外网，本地（无法测试）|测试服务器</span>
+        <input type="hidden" name="saveurl" value="http://ceshi.baihui.com/docs4baidu/onlineoa/zoho/file/save">
+        <input type="hidden" name="id" value="12345678doc">
+        <input type="hidden" name="persistence" value="false">
+    </form>
+</fieldset>
+
+<fieldset>
     <legend>文件上传</legend>
     <form method="POST" action="${ctx}/onlineoa/zoho/file/upload" enctype="multipart/form-data">
-        <input type="file" name="filePath"><input type="submit" value="upload">
+        <input type="file" name="file"><input type="submit" value="上传">
     </form>
 </fieldset>
 

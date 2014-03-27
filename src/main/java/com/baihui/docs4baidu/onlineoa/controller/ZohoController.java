@@ -11,26 +11,41 @@
  */
 package com.baihui.docs4baidu.onlineoa.controller;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
+import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,98 +82,83 @@ import java.util.Map;
 @RequestMapping(value = "/onlineoa/zoho")
 public class ZohoController {
 
-    public final static String XIEXIE_URL = "https://exportwriter.zoho.com/remotedoc.im";
-    public final static String SHEET_URL = "https://sheet.zoho.com/remotedoc.im";
-    public final static String XIUXIU_URL = "https://show.zoho.com/remotedoc.im";
-    public final static String APIKEY = "b55679812fe378dc4c288a47dbced340";
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Value(value = "${application.basePath}")
+    private String basePath;//TODO 是否要配置get|set
 
     @RequestMapping(value = "/file/list")
-    public String fileList(HttpServletRequest request) {
-        request.setAttribute("files", getFiles(request));
+    public String fileList(@ModelAttribute("UPLOADFOLDERPATH") String uploadFolderPath, Model model) {
+        File uploadFolder = new File(uploadFolderPath);
+        File[] files = uploadFolder.listFiles();
+        model.addAttribute("files", files);
+        logger.info("basePath:{}", basePath);
         return "/onlineoa/zoho/fileList";
     }
 
-    private File[] getFiles(HttpServletRequest request) {
-        String uploadFolderPath = request.getSession().getServletContext().getRealPath("/upload");//TODO 固定的上传目录，一次搞定的
-        File uploadFolder = new File(uploadFolderPath);
-        if (!uploadFolder.exists()) uploadFolder.mkdir(); //TODO 创建目录失败的处理
-        logger.debug("uploadFolderPath:{}", uploadFolderPath);
-        return uploadFolder.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
-    }
-
     @RequestMapping(value = "/file/upload")
-    public String upload(MultipartHttpServletRequest request) throws IOException {
-        List<MultipartFile> files = request.getFiles("filePath");
-        String uploadFolderPath = request.getSession().getServletContext().getRealPath("/upload");
+    public String upload(MultipartHttpServletRequest request, @ModelAttribute("UPLOADFOLDERPATH") String uploadFolderPath) throws IOException {
+        List<MultipartFile> files = request.getFiles("file");
         for (int i = 0; i < files.size(); i++) {
             MultipartFile clientFile = files.get(i);
             File uploadFile = new File(uploadFolderPath + "/" + clientFile.getOriginalFilename());
-            if (!uploadFile.exists()) uploadFile.createNewFile();
-            logger.debug("uploadFilePath:{}", uploadFile.getPath());
+            if (uploadFile.exists() == false) {
+                uploadFile.createNewFile(); //TODO 创建失败的具体处理
+            }
+            //文件已存在，则覆盖该文件
             FileUtils.copyInputStreamToFile(clientFile.getInputStream(), uploadFile);
+            logger.info("uploadFilePath:{}", uploadFile.getPath());
         }
         return "redirect:/onlineoa/zoho/file/list";
     }
 
     @RequestMapping(value = "/file/delete")
-    public String delete(HttpServletRequest request, @RequestParam("name") String name) {
-        String uploadFolderPath = request.getSession().getServletContext().getRealPath("/upload");
+    public String delete(@ModelAttribute("UPLOADFOLDERPATH") String uploadFolderPath, @RequestParam("name") String name) {
         String filePath = uploadFolderPath + "/" + name;
         File file = new File(filePath);
-        file.delete();
+        file.delete();  //TODO 删除失败的具体处理
+        logger.info("deleteFilePath:{}", filePath);
         return "redirect:/onlineoa/zoho/file/list";
     }
 
     @RequestMapping(value = "/file/download")
-    public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam("name") String name) throws IOException {
+    public void download(@ModelAttribute("UPLOADFOLDERPATH") String uploadFolderPath, @RequestParam("name") String name, HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream; charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(name, "UTF-8"));
-        String uploadFolderPath = request.getSession().getServletContext().getRealPath("/upload");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(name, "UTF-8"));//TODO 文件名乱码
         String filePath = uploadFolderPath + "/" + name;
-        logger.debug("downloadFilePath:{}", filePath);
         File file = new File(filePath);
         IOUtils.copy(new FileInputStream(file), response.getOutputStream());
+        logger.info("downloadFilePath:{}", filePath);
     }
 
 
     @RequestMapping(value = "/file/edit")
-    public void edit(HttpServletRequest request, @RequestParam("name") String name) throws IOException {
-        CloseableHttpClient client = HttpClients.createDefault();
-        //把一个普通参数和文件上传给下面这个地址    是一个servlet
-        HttpPost httpPost = new HttpPost(findEditor(fileSubfix(name)));
-        //把文件转换成流对象FileBody
-        FileBody bin = new FileBody(new File(filePath));
-        //普通字段  重新设置了编码方式
-        StringBody comment = new StringBody("这里是一个评论", ContentType.create("text/plain", Consts.UTF_8));
-        //StringBody comment = new StringBody("这里是一个评论", ContentType.TEXT_PLAIN);
+    public void edit(HttpServletRequest request, @RequestParam("name") String name, PrintWriter out) throws IOException {
+        String subfix = fileSubfix(name);
 
-        StringBody name = new StringBody("王五", ContentType.create("text/plain", Consts.UTF_8));
-        StringBody password = new StringBody("123456", ContentType.create("text/plain", Consts.UTF_8));
+        HttpClient httpClient = new HttpClient();
+        MultipartPostMethod postMethod = new MultipartPostMethod(findEditor(subfix));
+        logger.debug("url:{}", postMethod.getURI());
+        postMethod.addParameter("apikey", "b55679812fe378dc4c288a47dbced340");
+        postMethod.addParameter("output", "editor");
+        postMethod.addParameter("persistence", "false");
+        postMethod.addParameter("content", new File(request.getSession().getServletContext().getRealPath("/upload") + "/" + name));
+        postMethod.addParameter("filename", name);
+        postMethod.addParameter("format", subfix);
+        postMethod.addParameter("id", "12345678");
+        postMethod.addParameter("saveurl", basePath + "/onlineoa/zoho/file/save");
+        httpClient.executeMethod(postMethod);
+        IOUtils.copy(postMethod.getResponseBodyAsStream(), out);
+        postMethod.releaseConnection();
 
-        HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("media", bin)//相当于<input type="file" name="media"/>
-                .addPart("comment", comment)
-                .addPart("name", name)//相当于<input type="text" name="name" value=name>
-                .addPart("password", password)
-                .build();
-
-        httpPost.setEntity(reqEntity);
     }
 
     private final static Map<String, String> EDITORS = new HashMap<String, String>();
 
     static {
-        EDITORS.put("doc,dot,docx,dotx,wps,wpt", XIEXIE_URL);
-        EDITORS.put("xls,xlt,xlsx,xltx,et,ett", SHEET_URL);
-        EDITORS.put("ppt,pot,pps,dps,dpt", XIUXIU_URL);
+        EDITORS.put("doc,dot,docx,dotx,wps,wpt", "https://xiexie.baihui.com/remotedoc.im");
+        EDITORS.put("xls,xlt,xlsx,xltx,et,ett", "https://sheet.baihui.com/remotedoc.im");
+        EDITORS.put("ppt,pot,pps,dps,dpt", "https://xiuxiu.baihui.com/remotedoc.im");
     }
 
     private String fileSubfix(String filePath) {
@@ -179,7 +179,7 @@ public class ZohoController {
 
     @RequestMapping(value = "/file/save")
     public void save(MultipartHttpServletRequest request) throws IOException {
-        List<MultipartFile> files = request.getFiles("filePath");
+        List<MultipartFile> files = request.getFiles("filename");  //TODO 文件名称参数不确定content|filename
         String uploadFolderPath = request.getSession().getServletContext().getRealPath("/upload");
         for (int i = 0; i < files.size(); i++) {
             MultipartFile clientFile = files.get(i);
@@ -190,5 +190,11 @@ public class ZohoController {
         }
     }
 
+    public String getBasePath() {
+        return basePath;
+    }
 
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
 }
