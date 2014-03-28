@@ -42,22 +42,6 @@ import java.util.Map;
 
 /**
  * zoho在线办公
- * 编辑文件
- * 1.上传文件
- * 1.1)本地选择文件，表单提交
- * 1.2)文件列表选择文件，服务器上传
- * 2.转至编辑界面
- * 3.编辑文件
- * 4.保存文件
- * <p/>
- * 创建文件
- * 1.转至编辑界面
- * 2.编辑文件
- * 3.保存文件
- * <p/>
- * 辅助功能
- * 1.下载
- * 2.删除
  *
  * @author xiayouxue
  * @version version 1.0
@@ -70,7 +54,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/onlineoa/zoho")
-public class ZohoController {
+public class ZohoEditorController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

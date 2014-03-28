@@ -25,7 +25,7 @@ import java.io.File;
  * @date 2014-03-25 16:07
  * @modify version 1.0
  */
-public class BaiduyunInterfaceController {
+public class BaiduyunController {
 
     /**
      * 权限认证（百会）

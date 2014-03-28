@@ -12,6 +12,7 @@
 package com.baihui.docs4baidu.onlineoa.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -27,16 +28,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @modify version 1.0
  */
 @Controller
-@RequestMapping(value = "/file")
-public class BaihuiController {
+@RequestMapping(value = "")
+public class BaihuiProxyController {
 
     /**
-     *
+     * 编辑器打开文件
      * @return
      */
-    @RequestMapping(value = "/edit")
-    public String edit(){
-               return null;
+    @RequestMapping(value = "/editor/{name}", params = {"method=open"})
+    public String open(@PathVariable(value = "name") String name) {
+        return null;
     }
 
 }
