@@ -11,6 +11,8 @@
  */
 package com.baihui.docs4baidu.onlineoa.controller;
 
+import java.io.File;
+
 /**
  * 功能描述：
  *
@@ -24,4 +26,74 @@ package com.baihui.docs4baidu.onlineoa.controller;
  * @modify version 1.0
  */
 public class BaiduyunInterfaceController {
+
+    /**
+     * 权限认证（百会）
+     * 入参：合作单位
+     * 出参：是否通过
+     * 通过->编辑器，未通过->无权限界面
+     */
+    public String authorityFilterBaihui() {
+        return null;
+    }
+
+
+    /**
+     * 身份认证
+     * 入参：用户秘钥
+     * 出参：是否通过
+     * 认证通过->授权界面；认证未通过->无权界面
+     */
+    public String identityAuthentication() {
+        return null;
+    }
+
+    /**
+     * 权限认证
+     * 入参：用户秘钥
+     * 出参：是否通过
+     */
+    public String authorityFilter() {
+        return null;
+    }
+
+    /**
+     * 检查用户授权
+     * 入参：用户秘钥
+     * 出参：是否授权
+     * 是->编辑界面，否->授权界面
+     */
+    public boolean checkUserAuthorization() {
+        return false;
+    }
+
+
+    /**
+     * 编辑
+     * 入参：文件路径
+     * 出参：编辑界面
+     */
+    public String edit() {
+        return null;
+    }
+
+    /**
+     * 下载文件
+     * 入参：文件路径
+     * 出参：文件
+     */
+    public File downloadFile() {
+        return null;
+    }
+
+    /**
+     * 保存文件
+     * 入参：文件流
+     * 出参：成功|失败
+     */
+    public boolean saveFile() {
+        return false;
+    }
+
+
 }

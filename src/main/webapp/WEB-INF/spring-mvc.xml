@@ -12,11 +12,18 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <context:property-placeholder location="classpath:globel.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:application.properties" local-override="true"/>
 
-    <mvc:annotation-driven></mvc:annotation-driven>
-    <mvc:default-servlet-handler />
-    <mvc:view-controller path="/" view-name="redirect:/onlineoa/zoho/file/list"/>   <!--//TODO 没效果-->
+    <!--<mvc:annotation-driven></mvc:annotation-driven>-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <!--//TODO 如何将参数写在mvc:annotation-driven-->
+        <property name="useSuffixPatternMatch" value="false"/>
+    </bean>
+
+    <mvc:default-servlet-handler/>
+    <!--//TODO 没效果-->
+    <mvc:view-controller path="/" view-name="redirect:/onlineoa/zoho/file"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
@@ -27,5 +34,8 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="10000000"/>
     </bean>
+
+    <bean class="com.baihui.studio.store.ApplicationContextDataBean"/>
+
 
 </beans>

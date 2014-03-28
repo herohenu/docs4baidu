@@ -35,9 +35,12 @@ public class ApplicationContextDataListener implements ServletContextListener {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public static ServletContext servletContext;
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
+        ApplicationContextDataListener.servletContext = servletContext;
         setUploadFolderPath(servletContext);
     }
 
@@ -57,8 +60,8 @@ public class ApplicationContextDataListener implements ServletContextListener {
             boolean success = uploadFolder.mkdir();
             logger.info("创建上传文件夹“{}”！", uploadFolderPath);
             if (success == false) {
-                logger.warn("创建上传文件夹“{}”失败！", uploadFolderPath); //TODO 失败的具体处理。停止服务器|让当前应用停止|屏蔽涉及上传文件部分内容
-                return;
+                logger.error("创建上传文件夹“{}”失败！", uploadFolderPath); //TODO 失败的具体处理。停止服务器|让当前应用停止|屏蔽涉及上传文件部分内容
+                throw new Error("创建上传文件夹失败！");
             } else {
                 logger.info("创建上传文件夹“{}”成功！", uploadFolderPath);
             }

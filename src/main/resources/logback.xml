@@ -8,9 +8,10 @@
     </appender>
 
     <appender name="rootRolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>E:/project/company/docs4baidu/logs/root.log</file>
+        <!--<file>E:/project/company/docs4baidu/logs/root.log</file>-->
+        <file>/home/logs/docs4baidu/root.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>E:/project/company/docs4baidu/logs/root.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/home/logs/docs4baidu/root.%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
@@ -22,6 +23,6 @@
         <appender-ref ref="rootRolling"/>
     </root>
 
-    <logger name="com.baihui.docs4baidu" level="debug" />
+    <logger name="com.baihui.docs4baidu" level="debug"/>
 
 </configuration>

@@ -15,10 +15,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<%
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    pageContext.setAttribute("basePath", basePath);
-%>
 <html>
 <head>
     <title>zoho在线办公功能</title>
@@ -47,11 +43,11 @@
     <form method="post"
           action="https://xiexie.baihui.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor"
           enctype="multipart/form-data" target="_blank">
-        <input type="text" name="url" value="${basePath}/onlineoa/zoho/file/download?name=" style="width: 50em">
+        <input type="text" name="url" value="${basePath}/onlineoa/zoho/file/?method=download" style="width: 40em">
         <input type="text" name="filename">
         <input type="text" name="format" value="doc">
         <input type="submit" name="submit" value="编辑"> <span>内网|外网，本地（无法测试）|测试服务器</span>
-        <input type="hidden" name="saveurl" value="http://ceshi.baihui.com/docs4baidu/onlineoa/zoho/file/save">
+        <input type="hidden" name="saveurl" value="${basePath}/onlineoa/zoho/file?method=save">
         <input type="hidden" name="id" value="12345678doc">
         <input type="hidden" name="persistence" value="false">
     </form>
@@ -59,8 +55,14 @@
 
 <fieldset>
     <legend>文件上传</legend>
-    <form method="POST" action="${ctx}/onlineoa/zoho/file/upload" enctype="multipart/form-data">
+    <form method="POST" action="${ctx}/onlineoa/zoho/file?method=upload" enctype="multipart/form-data">
         <input type="file" name="file"><input type="submit" value="上传">
+    </form>
+</fieldset>
+<fieldset>
+    <legend>文件保存</legend>
+    <form method="POST" action="${ctx}/onlineoa/zoho/file?method=save" enctype="multipart/form-data" target="_blank">
+        <input type="file" name="content"><input type="submit" value="保存">
     </form>
 </fieldset>
 
@@ -75,9 +77,9 @@
             <tr>
                 <td>${file.name}</td>
                 <td>
-                    <a href="${ctx}/onlineoa/zoho/file/delete?name=${file.name}">删除</a>
-                    <a href="${ctx}/onlineoa/zoho/file/download?name=${file.name}">下载</a>
-                    <a href="${ctx}/onlineoa/zoho/file/edit?name=${file.name}" target="_blank">编辑</a>
+                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=delete">删除</a>
+                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=download">下载</a>
+                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=edit" target="_blank">编辑</a>
                 </td>
             </tr>
         </c:forEach>
