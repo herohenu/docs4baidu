@@ -20,13 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 该功能首页为index.jsp，在首页上显示连接列表
  *
  * @author xiayouxue
- * @version version 1.0
- * @ClassName:com.baihui.studio.test.controller.RequestMapping.java
- * @company 北京百会纵横科技有限公司</p>
- * @copyright 本文件归属 北京百会纵横科技有限公司</p>
- * @since(该版本支持的 JDK 版本) ： 1.6
  * @date 2014-03-25 14:13
- * @modify version 1.0
  */
 @Controller
 @RequestMapping(value = "/test/requestmapping")

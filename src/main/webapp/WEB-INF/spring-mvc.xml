@@ -12,7 +12,8 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <context:property-placeholder location="classpath:application.properties" local-override="true"/>
+    <context:property-placeholder
+            location="classpath:application.properties,classpath:editor/editor.properties,classpath:baidu/oauth.properties"/>
 
     <!--<mvc:annotation-driven></mvc:annotation-driven>-->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
@@ -21,9 +22,16 @@
         <property name="useSuffixPatternMatch" value="false"/>
     </bean>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/baidu/*"/>
+            <mvc:mapping path="/*/baidu/*"/>
+            <bean class="com.baihui.baidu.oauth.controller.OauthIntercetor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <mvc:default-servlet-handler/>
-    <!--//TODO 没效果-->
-    <mvc:view-controller path="/" view-name="redirect:/onlineoa/zoho/file"/>
+    <mvc:view-controller path="/" view-name="redirect:/file4editor"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>

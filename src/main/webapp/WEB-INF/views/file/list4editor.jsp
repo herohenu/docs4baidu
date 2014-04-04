@@ -18,6 +18,8 @@
 <html>
 <head>
     <title>zoho在线办公功能</title>
+    <script src="${ctx}/static/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+
 </head>
 <body>
 
@@ -31,7 +33,7 @@
         <input type="text" name="filename">
         <input type="text" name="format" value="doc">
         <input type="submit" name="submit" value="编辑">
-        <input type="hidden" name="saveurl" value="http://ceshi.baihui.com/docs4baidu/onlineoa/zoho/file/save">
+        <input type="hidden" name="saveurl" value="${basePath}/file?method=save">
         <input type="hidden" name="id" value="12345678doc">
         <input type="hidden" name="persistence" value="false">
     </form>
@@ -43,11 +45,11 @@
     <form method="post"
           action="https://xiexie.baihui.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor"
           enctype="multipart/form-data" target="_blank">
-        <input type="text" name="url" value="${basePath}/onlineoa/zoho/file/?method=download" style="width: 40em">
+        <input type="text" name="serverUrl" value="${basePath}/file/abc.doc?method=download" style="width: 35em">
         <input type="text" name="filename">
         <input type="text" name="format" value="doc">
         <input type="submit" name="submit" value="编辑"> <span>内网|外网，本地（无法测试）|测试服务器</span>
-        <input type="hidden" name="saveurl" value="${basePath}/onlineoa/zoho/file?method=save">
+        <input type="hidden" name="saveurl" value="${basePath}/file?method=save">
         <input type="hidden" name="id" value="12345678doc">
         <input type="hidden" name="persistence" value="false">
     </form>
@@ -55,13 +57,14 @@
 
 <fieldset>
     <legend>文件上传</legend>
-    <form method="POST" action="${ctx}/onlineoa/zoho/file?method=upload" enctype="multipart/form-data">
+    <form method="POST" action="${ctx}/file?method=upload" enctype="multipart/form-data">
         <input type="file" name="file"><input type="submit" value="上传">
     </form>
 </fieldset>
+
 <fieldset>
     <legend>文件保存</legend>
-    <form method="POST" action="${ctx}/onlineoa/zoho/file?method=save" enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="${ctx}/file?method=save" enctype="multipart/form-data" target="_blank">
         <input type="file" name="content"><input type="submit" value="保存">
     </form>
 </fieldset>
@@ -77,13 +80,27 @@
             <tr>
                 <td>${file.name}</td>
                 <td>
-                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=delete">删除</a>
-                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=download">下载</a>
-                    <a href="${ctx}/onlineoa/zoho/file/${file.name}?method=edit" target="_blank">编辑</a>
+                    <form action="${ctx}/editor" method="post" target="_blank">
+                        <input type="hidden" name="method" value="open">
+                        <select name="com">
+                            <option value="zoho">zoho</option>
+                            <option value="baihui">baihui</option>
+                            <option value="baidu">baidu</option>
+                        </select>
+                        <select name="way">
+                            <option value="local">local</option>
+                            <option value="remote">remote</option>
+                        </select>
+                        <input type="hidden" name="name" value="${file.name}">
+                        <button type="submit">编辑</button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>
     </table>
 </fieldset>
+
+
+
 </body>
 </html>
