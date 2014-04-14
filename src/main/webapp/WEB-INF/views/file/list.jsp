@@ -17,14 +17,16 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-    <title>zoho在线办公功能</title>
+    <title>文件管理</title>
     <meta charset="UTF-8">
 </head>
 <body>
 
+
+
 <fieldset>
     <legend>文件上传</legend>
-    <form method="POST" action="${ctx}/file?method=upload" enctype="multipart/form-data">
+    <form method="post" action="${ctx}/file?method=upload" enctype="multipart/form-data">
         <input type="file" name="file"><input type="submit" value="上传">
     </form>
 </fieldset>
@@ -36,12 +38,13 @@
             <th>名称</th>
             <th>操作</th>
         </tr>
-        <c:forEach items="${files}" var="file">
+        <c:forEach items="${files}" var="link">
             <tr>
-                <td>${file.name}</td>
+                <td>${link.name}</td>
                 <td>
-                    <a href="${ctx}/file/${file.name}?method=delete">删除</a><%--//TODO 中文乱码--%>
-                    <a href="${ctx}/file/${file.name}?method=download">下载</a>
+                    <a href="${ctx}/file/${link.name}?method=download">下载</a>
+                    <a href="${ctx}/file/${link.name}?method=edit">编辑</a>
+                    <a href="${ctx}/file/${link.name}?method=delete">删除</a><%--//TODO 中文乱码--%>
                 </td>
             </tr>
         </c:forEach>

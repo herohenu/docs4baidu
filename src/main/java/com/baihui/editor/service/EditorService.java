@@ -1,7 +1,7 @@
-package com.baihui.docs4baidu.editor.service;
+package com.baihui.editor.service;
 
-import com.baihui.docs4baidu.editor.entity.Editor;
-import com.baihui.docs4baidu.editor.repository.EditorRepository;
+import com.baihui.editor.entity.Editor;
+import com.baihui.editor.repository.EditorRepository;
 import com.baihui.studio.service.ServiceException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -17,9 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Set;
 
 /**
@@ -27,24 +28,21 @@ import java.util.Set;
  * @date 2014/4/1 20:44
  */
 @Service
-public class EditorServiceImpl {
+public class EditorService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value(value = "${editor.baidu.authorizationcode.redirect_uri}")
-    private String codeRedirectUri;
+    @Value(value = "${editor.baidu.openurl}")
+    private String openUrl;
 
-    @Value(value = "${editor.baidu.accesstoken.redirect_uri}")
-    private String tokenRedirectUri;
-
-    @Value(value = "${editor.fileUrl}")
-    private String fileUrl;
-
-    @Value(value = "${baidu.pcs.download}")
+    @Value(value = "${editor.downloadUrl}")
     private String downloadUrl;
 
-    @Value(value = "${baidu.pcs.upload}")
-    private String uploadUrl;
+    @Value(value = "${editor.saveUrl}")
+    private String saveUrl;
+
+    @Value(value = "${editor.titlebar.id}")
+    private String titlebarId;
 
     @Resource
     private EditorRepository editorRepository;
@@ -52,20 +50,20 @@ public class EditorServiceImpl {
     public Editor findEditorByComExtension(String com, String extension) {
         Set<Editor> editors = editorRepository.getEditors();
         for (Editor editor : editors) {
-            if (editor.getCom().equals(com) && editor.getFormat().contains(extension)) {
+            if (editor.getCom().equals(com) && editor.getFormats().contains(extension)) {
                 return editor;
             }
         }
-        throw new ServiceException(String.format("没有找到公司%s、扩展名%s对应的编辑器配置！", com, extension));
+        throw new ServiceException(String.format("没有找到公司%s、文件扩展名%s对应的编辑器！", com, extension));
     }
 
     public Part[] buildParts(Editor editor) throws FileNotFoundException {
-        String extension = FilenameUtils.getExtension(editor.getFilename());
+        String extension = FilenameUtils.getExtension(editor.getFileName());
         return new Part[]{new StringPart("apikey", editor.getApikey()), new StringPart("output", "editor"),
-                new StringPart("persistence", editor.getPersistence()),
-                editor.getContent() == null ? new StringPart("url", editor.getFileUrl()) : new FilePart("content", editor.getFilename(), editor.getContent()),
-                new StringPart("filename", editor.getFilename(),"utf-8"), new StringPart("format", extension),
-                new StringPart("id", "12345678"), new StringPart("saveurl", editor.getSaveUrl())};
+                new StringPart("persistence", editor.getPersistence()), new StringPart("url", editor.getDownloadUrl()),
+                new StringPart("filepath", editor.getFilePath(), "utf-8"),
+                new StringPart("filename", editor.getFileName(), "utf-8"), new StringPart("format", editor.getFormat()),
+                new StringPart("id", editor.getId()), new StringPart("saveurl", editor.getSaveUrl())};
     }
 
     public String open(Editor editor) throws IOException {
@@ -81,43 +79,36 @@ public class EditorServiceImpl {
         return responseBody;
     }
 
-    public String getCodeRedirectUri() {
-        return codeRedirectUri;
+    public String getOpenUrl(String path) throws UnsupportedEncodingException {
+        return String.format(openUrl, URLEncoder.encode(path, "utf-8"));
     }
 
-    public void setCodeRedirectUri(String codeRedirectUri) {
-        this.codeRedirectUri = codeRedirectUri;
+    public String getSaveUrl(String token, String path) {
+        return String.format(saveUrl, token, path);
     }
 
-    public String getTokenRedirectUri() {
-        return tokenRedirectUri;
-    }
-
-    public void setTokenRedirectUri(String tokenRedirectUri) {
-        this.tokenRedirectUri = tokenRedirectUri;
-    }
-
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
+    public void setSaveUrl(String saveUrl) {
+        this.saveUrl = saveUrl;
     }
 
     public String getDownloadUrl() {
         return downloadUrl;
     }
 
+    public String getDownloadUrl(String filePath) {
+        return String.format(downloadUrl, filePath);
+    }
+
+
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
     }
 
-    public String getUploadUrl() {
-        return uploadUrl;
+    public String getTitlebarId() {
+        return titlebarId;
     }
 
-    public void setUploadUrl(String uploadUrl) {
-        this.uploadUrl = uploadUrl;
+    public void setTitlebarId(String titlebarId) {
+        this.titlebarId = titlebarId;
     }
 }

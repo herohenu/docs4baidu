@@ -13,8 +13,8 @@
 <fieldset>
     <legend>个人云存储接口调试</legend>
     <ul>
-        <c:forEach items="${urls}" var="url">
-            <li><a href="${url}">${url}</a></li>
+        <c:forEach items="${files}" var="link">
+            <li><a href="${link.value}">${link.key}</a></li>
         </c:forEach>
     </ul>
 </fieldset>

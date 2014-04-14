@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -34,8 +36,6 @@ public class OauthService {
     private String codeResponseType;
     @Value(value = "${baidu.authorizationcode.redirect_uri}")
     private String codeRedirectUri;
-    @Value(value = "${baidu.authorizationcode.redirect_uri.value}")
-    private String codeValueRedirectUri;
 
     @Value(value = "${baidu.accesstoken}")
     private String accessToken;
@@ -50,8 +50,15 @@ public class OauthService {
     @Value(value = "${baidu.accesstoken.redirect_uri}")
     private String tokenRedirectUri;
 
+    @Value(value = "${baidu.accesstoken.ignoreuris}")
+    private String accessTokenIgnoreUris;
+
     public String getAuthorizationCodeUrl(String redirectUri) {
         return String.format(authorizationCode, redirectUri);
+    }
+
+    public String getAuthorizationCodeUrl() throws UnsupportedEncodingException {
+        return getAuthorizationCodeUrl(URLEncoder.encode(codeRedirectUri, "utf-8"));
     }
 
     public String getAuthorizationCode(String authorizationCodeUrl) throws IOException {
@@ -68,12 +75,16 @@ public class OauthService {
         return String.format(accessToken, code, redirectUri);
     }
 
+    public String getAccessTokenUrl(String code) throws UnsupportedEncodingException {
+        return getAccessTokenUrl(code, URLEncoder.encode(tokenRedirectUri, "utf-8"));
+    }
+
     public Map<String, String> getAccessToken(String tokenUrl) throws IOException {
         HttpClient httpClient = new HttpClient();
         PostMethod postMethod = new PostMethod(tokenUrl);
         httpClient.executeMethod(postMethod);
         String accessToken = IOUtils.toString(postMethod.getResponseBodyAsStream());
-        logger.info("AccessToken:{}", accessToken);
+        logger.info("取得AccessToken={}", accessToken.replace("\n", ""));
         postMethod.releaseConnection();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -101,11 +112,11 @@ public class OauthService {
         this.codeRedirectUri = codeRedirectUri;
     }
 
-    public String getCodeValueRedirectUri() {
-        return codeValueRedirectUri;
+    public String getAccessTokenIgnoreUris() {
+        return accessTokenIgnoreUris;
     }
 
-    public void setCodeValueRedirectUri(String codeValueRedirectUri) {
-        this.codeValueRedirectUri = codeValueRedirectUri;
+    public void setAccessTokenIgnoreUris(String accessTokenIgnoreUris) {
+        this.accessTokenIgnoreUris = accessTokenIgnoreUris;
     }
 }

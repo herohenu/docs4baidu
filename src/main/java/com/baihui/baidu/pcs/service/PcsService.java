@@ -23,15 +23,32 @@ public class PcsService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Value(value = "${baidu.pcs.files}")
+    private String files;
+
     @Value(value = "${baidu.pcs.upload}")
     private String upload;
 
     @Value(value = "${baidu.pcs.download}")
     private String download;
 
+    public String getFiles() {
+        return files;
+    }
+
+    public void setFiles(String files) {
+        this.files = files;
+    }
+
     public String getDownloadUrl(String token, String path) {
         return String.format(download, token, path);
     }
 
+    public String getUploadUrl(String token, String path) {
+        return String.format(upload, token, path);
+    }
 
+    public void setUpload(String upload) {
+        this.upload = upload;
+    }
 }

@@ -7,13 +7,12 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <context:property-placeholder location="classpath:application.properties,classpath:editor/editor.properties,
+            classpath:baidu/oauth.properties,classpath:baidu/pcs.properties"/>
 
     <context:component-scan base-package="com.baihui" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-
-    <context:property-placeholder
-            location="classpath:application.properties,classpath:editor/editor.properties,classpath:baidu/oauth.properties"/>
 
     <!--<mvc:annotation-driven></mvc:annotation-driven>-->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
@@ -23,15 +22,19 @@
     </bean>
 
     <mvc:interceptors>
+        <!--百度授权拦截器-->
         <mvc:interceptor>
-            <mvc:mapping path="/baidu/*"/>
-            <mvc:mapping path="/*/baidu/*"/>
-            <bean class="com.baihui.baidu.oauth.controller.OauthIntercetor"></bean>
+            <!--拦截与百度相关的操作-->
+            <mvc:mapping path="/baidu/**"/>
+            <mvc:mapping path="/*/baidu/**"/>
+            <!--排除授权码响应请求 //TODO 无法读取属性配置文件值-->
+            <mvc:exclude-mapping path="${baidu.authorizationcode.redirect_uri}"/>
+            <bean class="com.baihui.baidu.oauth.controller.BaiduOauthIntercetor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
     <mvc:default-servlet-handler/>
-    <mvc:view-controller path="/" view-name="redirect:/file4editor"/>
+    <mvc:view-controller path="/" view-name="redirect:/index"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
@@ -43,7 +46,7 @@
         <property name="maxUploadSize" value="10000000"/>
     </bean>
 
-    <bean class="com.baihui.studio.store.ApplicationContextDataBean"/>
+
 
 
 </beans>

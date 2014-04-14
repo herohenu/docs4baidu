@@ -1,26 +1,20 @@
+<%@ page import="com.baihui.baidu.oauth.Constant" %>
 <%--
-  接口调试功能
+  百度开放授权接口调试
   User: xiayouxue
   Date:2014/4/2 14:57
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>百度接口调试</title>
+    <title>百度开放授权接口调试</title>
 </head>
 <body>
 <fieldset>
-    <legend>百度接口调试</legend>
-    <div>${error}</div>
-    <a href="${codeUrl}">Authorization Code</a><br/>
+    <legend>百度开放授权接口调试</legend>
+    <p>code:<%=Constant.VS_BAIDU_OAUTH_AUTHCODE%>${BAIDU_OAUTH_AUTHCODE}</p>
 
-    <div>
-        Authorization Code->${code}<br/>
-        Access Token->${token}
-    </div>
-    <%--<a href="${tokenUrl}">Access Token->${token}</a><br/>
-    <a href="#">文件下载</a><br/>
-    <a href="#">文件上传</a><br/>--%>
+    <p>token:<%=Constant.VS_BAIDU_OAUTH_TOKEN%>${BAIDU_OAUTH_TOKEN}</p>
 </fieldset>
 </body>
 </html>

@@ -14,9 +14,10 @@
     </context:component-scan>
 
     <context:property-placeholder location="classpath:application.properties,classpath:editor/editor.properties,
-            classpath:baidu/oauth.properties,classpath:baidu/pcs.properties"/>
+            classpath:baidu/oauth.properties,classpath:baidu/pcs.properties" file-encoding="gbk" />
 
     <import resource="classpath:editor/editor.xml"/>
 
+    <bean class="com.baihui.studio.store.ApplicationContextDataBean"/>
 
 </beans>

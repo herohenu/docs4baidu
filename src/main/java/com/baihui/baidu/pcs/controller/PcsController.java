@@ -1,5 +1,6 @@
 package com.baihui.baidu.pcs.controller;
 
+import com.baihui.baidu.oauth.Constant;
 import com.baihui.baidu.oauth.service.OauthService;
 import com.baihui.baidu.pcs.service.PcsService;
 import org.apache.commons.lang3.StringUtils;
@@ -7,19 +8,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * 百度云
+ * 百度个人云存储控制类
  *
  * @author xiayouxue
  * @date 2014/4/2 15:32
@@ -33,47 +35,26 @@ public class PcsController {
     @Resource
     private PcsService pcsService;
 
-    @Resource
-    private OauthService oauthService;
-
+    @ModelAttribute("token")
+    public String token(HttpSession session) {
+        return (String) session.getAttribute(Constant.VS_BAIDU_OAUTH_TOKEN_TOKEN);
+    }
 
     /**
-     * 百度开放认证接口
+     * 显示文件列表
      */
     @RequestMapping(value = "")
-    public String list(@RequestParam(value = "code") String code,
-                       Model model) {
-        //请求授权码<-未获取授权码
-        if (StringUtils.isEmpty(code) == true) {
-            String codeRedirectUri = String.format(editorService.getCodeRedirectUri(), path);
-            String authorizationCodeUrl = oauthService.getAuthorizationCodeUrl(URLEncoder.encode(codeRedirectUri, "utf-8"));
-
-            logger.info("authorizationCodeUrl:{}", authorizationCodeUrl);
-            return "redirect:" + authorizationCodeUrl;//TODO 关于URL?后?，?转义
+    public String list(Model model, @ModelAttribute(value = "token") String token) {
+        Map<String, String> fileMap = new LinkedHashMap<String, String>();
+        logger.info("文件列表，files={}", pcsService.getFiles());
+        String[] files = pcsService.getFiles().split(",");
+        for (int i = 0; i < files.length; i++) {
+            String file = files[i];
+            fileMap.put(file, pcsService.getDownloadUrl(token, file));
         }
-        List<String> urls = new ArrayList<String>();
-        urls.add("/apps");
-        return "baidu/pcs/index";
+        model.addAttribute("files", fileMap);
+        return "/baidu/pcs/index";
     }
 
-    @RequestMapping(value = "/result")
-    public String result(@RequestParam(value = "code") String code, HttpServletRequest request) throws IOException {
-        //处理认证代码返回结果
-        request.setAttribute("code", code);
-        logger.info("authorizationCode:{}", code);
-
-        //请求访问令牌
-        Map<String, String> resultMap = pcsService.getAccessToken(pcsService.getAccessTokenUrl(code, pcsService.getTokenRedirectUri()));
-        if (resultMap.containsKey("error") == true) {
-            String error = resultMap.get("error");
-            logger.info("error:{}", error);
-            request.setAttribute("error", error);
-            return "baidu/oauth/index";
-        }
-        String token = resultMap.get("access_token");
-        request.setAttribute("token", token);
-        logger.info("accessToken:{}", token);
-        return "baidu/oauth/index";
-    }
 
 }

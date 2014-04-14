@@ -10,70 +10,70 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <bean id="zohoWriterEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="zohoWriterEditor"/>
+    <bean id="zohoWriterEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.zoho}"/>
+        <property name="type" value="${eidtor.type.writer}"/>
         <property name="serverUrl" value="${editor.zoho.writer.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
-        <property name="format" value="${editor.writer.format}"/>
+        <property name="formats" value="${editor.writer.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="zoho"/>
     </bean>
 
-    <bean id="zohoSheetEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="zohoSheetEditor"/>
+    <bean id="zohoSheetEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.zoho}"/>
+        <property name="type" value="${eidtor.type.sheet}"/>
         <property name="serverUrl" value="${editor.zoho.sheet.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
-        <property name="format" value="${editor.sheet.format}"/>
+        <property name="formats" value="${editor.sheet.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="zoho"/>
     </bean>
 
-    <bean id="zohoShowEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="zohoSheetEditor"/>
+    <bean id="zohoShowEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.zoho}"/>
+        <property name="type" value="${eidtor.type.show}"/>
         <property name="serverUrl" value="${editor.zoho.show.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
-        <property name="format" value="${editor.show.format}"/>
+        <property name="formats" value="${editor.show.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="zoho"/>
     </bean>
 
-    <bean id="baihuiWriterEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="baihuiWriterEditor"/>
+    <bean id="baihuiWriterEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.baihui}"/>
+        <property name="type" value="${eidtor.type.writer}"/>
         <property name="serverUrl" value="${editor.baihui.writer.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
-        <property name="format" value="${editor.writer.format}"/>
+        <property name="formats" value="${editor.writer.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="baihui"/>
     </bean>
 
-    <bean id="baihuiSheetEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="baihuiSheetEditor"/>
+    <bean id="baihuiSheetEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.baihui}"/>
+        <property name="type" value="${eidtor.type.sheet}"/>
         <property name="serverUrl" value="${editor.baihui.sheet.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
-        <property name="format" value="${editor.sheet.format}"/>
+        <property name="formats" value="${editor.sheet.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="baihui"/>
     </bean>
 
-    <bean id="baihuiShowEditor" class="com.baihui.docs4baidu.editor.entity.Editor">
-        <property name="name" value="baihuiSheetEditor"/>
+    <bean id="baihuiShowEditor" class="com.baihui.editor.entity.Editor">
+        <property name="com" value="${eidtor.com.baihui}"/>
+        <property name="type" value="${eidtor.type.show}"/>
         <property name="serverUrl" value="${editor.baihui.show.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
-        <property name="format" value="${editor.show.format}"/>
+        <property name="formats" value="${editor.show.formats}"/>
         <property name="persistence" value="false"/>
         <property name="id" value="123456789"/>
         <property name="saveUrl" value="${editor.saveUrl}"/>
-        <property name="com" value="baihui"/>
     </bean>
 
 </beans>

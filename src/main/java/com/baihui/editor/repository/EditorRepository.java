@@ -1,7 +1,6 @@
-package com.baihui.docs4baidu.editor.repository;
+package com.baihui.editor.repository;
 
-import com.baihui.docs4baidu.editor.entity.Editor;
-import org.springframework.stereotype.Component;
+import com.baihui.editor.entity.Editor;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;

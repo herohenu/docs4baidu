@@ -1,4 +1,4 @@
-package com.baihui.docs4baidu.editor.controller;
+package com.baihui.editor.controller;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
