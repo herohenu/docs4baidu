@@ -8,6 +8,87 @@
 
 </head>
 <body>
+<fieldset>
+    <legend>doc</legend>
+    <form method="POST"
+          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">上传文件: <input type="file" name="content" size="38">
+        <input type="hidden" name="filename" value="temp.doc">
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="doc">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+    <form method="POST"
+          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        <a href="${basePath}/file/temp.doc?method=download">temp.doc</a>
+        <input type="hidden" name="url" value="${basePath}/file/temp.doc?method=download">
+        <input type="hidden" name="filename" value="temp.doc">
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="doc">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend>xls</legend>
+    <form method="POST"
+          action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        上传文件：<input type="file" name="content" size="38">
+        <input type="hidden" name="filename" value="temp.xls">
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="xls">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+    <form method="POST"
+          action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        <a href="${basePath}/file/temp.xls?method=download">temp.xls</a>
+        <input type="hidden" name="url" value="${basePath}/file/temp.xls?method=download">
+        <input type="hidden" name="filename" value="temp.xls">
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="xls">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend>ppt</legend>
+    <form method="POST"
+          action="https://show.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        上传文件： <input type="file" name="content" size="38">
+        <input type="hidden" name="filename" value="temp.ppt">
+        <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="ppt">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+    <form method="POST"
+          action="https://show.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+          enctype="multipart/form-data" target="_blank">
+        <a href="${basePath}/file/temp.ppt?method=download">temp.ppt</a>
+        <input type="hidden" name="filename" value="temp.ppt">
+        <input type="hidden" name="url" value="${basePath}/file/temp.ppt?method=download">
+    <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
+        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="id" value="12345678">
+        <input type="hidden" name="format" value="ppt">
+        <input type="hidden" name="persistence" value="false">
+        <input type="submit" value="EditDoc" name="submit">
+    </form>
+</fieldset>
 
 <fieldset>
     <legend>ZOHO编辑器管理</legend>
@@ -18,10 +99,15 @@
               action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
               enctype="multipart/form-data" target="_blank">
             <input type="file" name="content" size="38">
-            <input type="text" name="filename" value="temp">
-            <input type="text" name="format" value="doc">
+            <input type="text" name="filename" value="temp.doc">
+            <%--<input type="text" name="format" value="doc">--%>
+            <select onchange="this.form.filename.value='temp.'+this.value">
+                <option value="doc">doc</option>
+                <option value="xls">xls</option>
+                <option value="ppt">ppt</option>
+            </select>
             <input type="submit" name="submit" value="编辑">
-            <input type="hidden" name="saveurl" value="${basePath}/file?method=save">
+            <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
             <input type="hidden" name="id" value="12345678doc">
             <input type="hidden" name="persistence" value="false">
         </form>
@@ -37,7 +123,7 @@
             <input type="text" name="filename" value="temp">
             <input type="text" name="format" value="doc">
             <input type="submit" name="submit" value="编辑">
-            <input type="hidden" name="saveurl" value="${basePath}/file?method=save">
+            <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
             <input type="hidden" name="id" value="12345678doc">
             <input type="hidden" name="persistence" value="false">
         </form>

@@ -14,7 +14,7 @@
     </context:component-scan>
 
     <context:property-placeholder location="classpath:application.properties,classpath:editor/editor.properties,
-            classpath:baidu/oauth.properties,classpath:baidu/pcs.properties" file-encoding="gbk" />
+            classpath:com/baihui/baidu/oauth/oauth.properties,classpath:com/baihui/baidu/pcs/pcs.properties" file-encoding="gbk" />
 
     <import resource="classpath:editor/editor.xml"/>
 

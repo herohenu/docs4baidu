@@ -16,6 +16,10 @@ import com.baihui.editor.entity.Editor;
 import com.baihui.editor.service.EditorService;
 import com.baihui.file.service.FileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -23,14 +27,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,41 +75,33 @@ public class EditorController {
     public String zoho(Model model) {
         String local = fileService.getBasePath() + "/file/temp.doc?method=download";
         String baidu = pcsService.getDownloadUrl("", "/apps/docs4baidu/temp.doc");
+        model.addAttribute("basePath", fileService.getBasePath());
         model.addAttribute("downloadUrl", baidu);
         return "/editor/zoho";
     }
 
-    @RequestMapping(value = "/editor/baihui")
-    public String baihui(Model model) {
-        return "/editor/baihui";
-    }
 
     /**
-     * 打开编辑器
-     * com:编辑器公司，zoho、baihui、baidu
-     * way:打开方式，local、remote
-     * name:文件名称
+     * 上传文件
      */
-    @RequestMapping(value = "/editor", params = "method=open")
-    public void open(@RequestParam(value = "com") String com,
-                     @RequestParam(value = "way", defaultValue = "local") String way,
-                     @RequestParam(value = "name") String name,
-                     PrintWriter out) throws IOException, CloneNotSupportedException {
-        logger.info("打开编辑器，使用公司{}、方式{}，打开文件{}", com, way, name);//TODO 关于GET、POST请求对于编码的影响
-
-        String extension = FilenameUtils.getExtension(name);
-        Editor editor = editorService.findEditorByComExtension(com, extension);
-        editor.setFileName(name);
-        ObjectMapper mapper = new ObjectMapper();
-        logger.info("editor:{}", mapper.writeValueAsString(editor));
-
-
-        String fileUrl = String.format(editorService.getDownloadUrl(), URLEncoder.encode(name, "utf-8"));//TODO URL使用自身或者百度
-        editor.setDownloadUrl(fileUrl);
-        logger.info("fileUrl:{}", fileUrl);
-
-        String content = editorService.open(editor);
-        IOUtils.write(content, out);
+    @RequestMapping(value = "/editor", params = "method=save")
+    public void save(MultipartHttpServletRequest request, PrintWriter out) throws IOException {
+        logger.info("编辑后保存文件");
+        String name = request.getParameter("filename");
+        logger.debug("\t原始文件名={}", name);
+//        name = URLDecoder.decode(name, "utf-8");
+//        logger.debug("\t转义文件名:{}", name);
+        List<MultipartFile> files = request.getFiles("content");
+        logger.debug("\t文件数目:{}", files.size());
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile clientFile = files.get(i);
+            logger.debug("\tclientFile.name:{},client.originalFilename:{}", clientFile.getName(), clientFile.getOriginalFilename());
+            File uploadFile = new File(fileService.getUploadPath() + "/" + name);
+            if (uploadFile.exists() == false) {
+                uploadFile.createNewFile(); //TODO 创建失败的具体处理
+            }
+            FileUtils.copyInputStreamToFile(clientFile.getInputStream(), uploadFile);
+        }
     }
 
 }

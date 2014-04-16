@@ -14,7 +14,7 @@
 <fieldset>
     <legend>编辑器首页</legend>
     <c:forEach items="${links}" var="link">
-        <li><a href="${link.value}" target="_blank">${link.key}</a></li>
+        <li><a href="${ctx}${link.value}" target="_blank">${link.key}</a></li>
     </c:forEach>
 </fieldset>
 

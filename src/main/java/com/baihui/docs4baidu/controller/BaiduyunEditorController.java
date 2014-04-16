@@ -7,7 +7,10 @@ import com.baihui.editor.service.EditorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.*;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.io.FilenameUtils;
 import org.htmlparser.util.ParserException;
 import org.slf4j.Logger;
@@ -69,9 +72,40 @@ public class BaiduyunEditorController {
         editor.setFormat(extension);
         editor.setDownloadUrl(pcsService.getDownloadUrl(token, encodePath));
         editor.setSaveUrl(pcsService.getUploadUrl(token, encodePath));
+        editor.setSaveUrl(editorService.getSaveUrl(token, path));
         logger.info("\t编辑器详情={}", new ObjectMapper().writeValueAsString(editor));
         model.addAttribute("editor", editor);
-        return "/editor/form";
+        return "docs4baidu/form";
+    }
+
+    /**
+     * 编辑后保存文件
+     */
+    @RequestMapping(value = "/editor/save", method = {RequestMethod.POST})
+    public void save(MultipartHttpServletRequest request, @ModelAttribute(value = "token") String token) throws IOException {
+        logger.info("编辑后保存文件");
+        String name = request.getParameter("filename");
+        logger.debug("\t原始文件名={}", name);
+//        name = URLDecoder.decode(name, "utf-8");
+//        logger.debug("\t转义文件名:{}", name);
+        List<MultipartFile> files = request.getFiles("content");
+        logger.debug("\t文件数目:{}", files.size());
+        Part[] parts = new Part[files.size()];
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile clientFile = files.get(i);
+            logger.debug("\tclientFile.name:{},client.originalFilename:{}", clientFile.getName(), clientFile.getOriginalFilename());
+            parts[i] = new FilePart("file", new ByteArrayPartSource(clientFile.getOriginalFilename(), clientFile.getBytes()));
+        }
+
+        String filePath = request.getParameter("filepath");
+        filePath = URLDecoder.decode(filePath, "utf-8");
+        logger.debug("\t上传文件至百度服务器，URL={}", pcsService.getUploadUrl(token, filePath));
+        HttpClient httpClient = new HttpClient();
+        PostMethod postMethod = new PostMethod(pcsService.getUploadUrl(token, name));
+        MultipartRequestEntity requestEntity = new MultipartRequestEntity(parts, postMethod.getParams());
+        postMethod.setRequestEntity(requestEntity);
+        httpClient.executeMethod(postMethod);
+        postMethod.releaseConnection();
     }
 
 
