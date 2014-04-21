@@ -3,6 +3,12 @@ package com.baihui.file.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * 文件管理服务类
+ *
+ * @author xiayouxue
+ * @date 2014/4/1
+ */
 @Service
 public class FileService {
 

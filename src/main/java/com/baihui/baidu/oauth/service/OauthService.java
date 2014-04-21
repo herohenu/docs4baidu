@@ -19,7 +19,7 @@ import java.util.Map;
  * 百度开放认证
  *
  * @author xiayouxue
- * @date 2014/4/2 16:23
+ * @date 2014/4/2
  */
 @Service
 public class OauthService {

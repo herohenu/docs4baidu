@@ -12,23 +12,13 @@
 package com.baihui.editor.controller;
 
 import com.baihui.baidu.pcs.service.PcsService;
-import com.baihui.editor.entity.Editor;
-import com.baihui.editor.service.EditorService;
 import com.baihui.file.service.FileService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -37,8 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +35,7 @@ import java.util.Map;
  * 编辑器控制类
  *
  * @author xiayouxue
- * @date 2014/3/31 20:08
+ * @date 2014/3/31
  */
 @Controller
 @RequestMapping(value = "")
@@ -56,12 +44,13 @@ public class EditorController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
-    private EditorService editorService;
-    @Resource
     private FileService fileService;
     @Resource
     private PcsService pcsService;
 
+    /**
+     * 转至编辑器列表页
+     */
     @RequestMapping(value = "/editor")
     public String list(Model model) throws UnsupportedEncodingException {
         Map<String, String> links = new LinkedHashMap<String, String>();
@@ -71,6 +60,9 @@ public class EditorController {
         return "/editor/index";
     }
 
+    /**
+     * 转至zoho编辑器页
+     */
     @RequestMapping(value = "/editor/zoho")
     public String zoho(Model model) {
         String local = fileService.getBasePath() + "/file/temp.doc?method=download";
@@ -82,15 +74,13 @@ public class EditorController {
 
 
     /**
-     * 上传文件
+     * 编辑后保存文件
      */
     @RequestMapping(value = "/editor", params = "method=save")
     public void save(MultipartHttpServletRequest request, PrintWriter out) throws IOException {
         logger.info("编辑后保存文件");
         String name = request.getParameter("filename");
         logger.debug("\t原始文件名={}", name);
-//        name = URLDecoder.decode(name, "utf-8");
-//        logger.debug("\t转义文件名:{}", name);
         List<MultipartFile> files = request.getFiles("content");
         logger.debug("\t文件数目:{}", files.size());
         for (int i = 0; i < files.size(); i++) {

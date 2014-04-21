@@ -4,7 +4,6 @@ import com.baihui.baidu.oauth.Constant;
 import com.baihui.baidu.oauth.service.OauthService;
 import com.baihui.studio.util.UrlPathUtil;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,17 +13,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 授权拦截器
  * 1.在每一次对百度访问时，检查是否有访问令牌
  *
  * @author xiayouxue
- * @date 2014/4/4 10:07
+ * @date 2014/4/4
  */
 
 public class BaiduOauthIntercetor extends HandlerInterceptorAdapter {

@@ -2,6 +2,9 @@ package com.baihui.baidu.oauth;
 
 /**
  * 常量类
+ *
+ * @author xiayouxue
+ * @date 2014/3/20
  */
 public class Constant {
     /*session域变量定义*/

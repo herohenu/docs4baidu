@@ -4,7 +4,7 @@ package com.baihui.editor.entity;
  * 编辑器配置
  *
  * @author xiayouxue
- * @date 2014/3/31 20:08
+ * @date 2014/3/31
  */
 public class Editor implements Cloneable {
 

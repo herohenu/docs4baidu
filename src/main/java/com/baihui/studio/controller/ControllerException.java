@@ -4,7 +4,7 @@ package com.baihui.studio.controller;
  * 控制器层异常
  *
  * @author xiayouxue
- * @date 2014/3/31 20:29
+ * @date 2014/3/31
  */
 public class ControllerException extends RuntimeException {
 

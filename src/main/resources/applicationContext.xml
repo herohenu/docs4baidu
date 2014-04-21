@@ -13,11 +13,55 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <context:property-placeholder location="classpath:application.properties,classpath:editor/editor.properties,
-            classpath:com/baihui/baidu/oauth/oauth.properties,classpath:com/baihui/baidu/pcs/pcs.properties" file-encoding="gbk" />
+    <context:property-placeholder location="classpath:application.properties,classpath:datasource.properties,classpath:editor/editor.properties,
+            classpath:com/baihui/baidu/oauth/oauth.properties,classpath:com/baihui/baidu/pcs/pcs.properties"
+                                  file-encoding="gbk"/>
 
     <import resource="classpath:editor/editor.xml"/>
 
-    <bean class="com.baihui.studio.store.ApplicationContextDataBean"/>
+    <bean class="com.baihui.studio.store.ApplicationInitializingBean"/>
+    <!--
+
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+            <property name="driverClassName" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+            <property name="defaultAutoCommit" value="false"/>
+        </bean>
+
+        &lt;!&ndash; Jpa Entity Manager 配置 &ndash;&gt;
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+            <property name="packagesToScan" value="com.baihui"/>
+            <property name="jpaProperties">
+                <props>
+                    &lt;!&ndash; 命名规则 My_NAME->MyName &ndash;&gt;
+                    <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                </props>
+            </property>
+        </bean>
+
+        <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+        </bean>
+
+        &lt;!&ndash; Spring Data Jpa配置 &ndash;&gt;
+        <jpa:repositories base-package="com.baihui" transaction-manager-ref="transactionManager"
+                          entity-manager-factory-ref="entityManagerFactory"/>
+
+        &lt;!&ndash; Jpa 事务配置 &ndash;&gt;
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        </bean>
+
+        &lt;!&ndash; 使用annotation定义事务 &ndash;&gt;
+        <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+        &lt;!&ndash; JSR303 Validator定义 &ndash;&gt;
+        <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    -->
 
 </beans>

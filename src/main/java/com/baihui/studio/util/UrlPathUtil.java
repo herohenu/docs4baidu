@@ -1,13 +1,14 @@
 package com.baihui.studio.util;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * URL路径工具类
+ *
+ * @author xiayouxue
+ * @date 2014/4/14
  */
 public class UrlPathUtil {
 

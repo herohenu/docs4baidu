@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * @author xiayouxue
- * @date 2014/3/31 20:23
+ * @date 2014/3/31
  */
 @Repository
 public class EditorRepository {

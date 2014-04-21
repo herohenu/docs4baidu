@@ -11,7 +11,7 @@ import java.util.Map;
  * 首页
  *
  * @author xiayouxue
- * @date 2014/4/9 11:22
+ * @date 2014/4/9
  */
 @Controller
 @RequestMapping(value = "")

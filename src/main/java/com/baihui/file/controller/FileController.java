@@ -36,7 +36,7 @@ import java.util.Map;
  * 文件管理控制类
  *
  * @author xiayouxue
- * @version 1.0
+ * @date 2014/4/1
  */
 @Controller
 @RequestMapping(value = "/file")
@@ -54,7 +54,7 @@ public class FileController {
     public String list(Model model) {
         File uploadFolder = new File(fileService.getUploadPath());
         File[] files = uploadFolder.listFiles();
-        logger.info("显示文件列表，files.length={}", files.length);
+        logger.info("显示文件列表，files.length={}", files == null ? 0 : files.length);
         model.addAttribute("files", files);
         return "/file/list";
     }
@@ -65,7 +65,7 @@ public class FileController {
     @RequestMapping(value = "", method = {RequestMethod.POST})
     public String upload(MultipartHttpServletRequest request) throws IOException {
         Map<String, MultipartFile> fileMap = request.getFileMap();
-        logger.info("上传文件，files.length={}", fileMap.size());
+        logger.info("上传文件，共“{}”个", fileMap.size());
         for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
             MultipartFile clientFile = entry.getValue();
             File uploadFile = new File(fileService.getUploadPath() + "/" + clientFile.getOriginalFilename());

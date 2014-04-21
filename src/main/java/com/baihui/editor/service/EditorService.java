@@ -5,7 +5,6 @@ import com.baihui.editor.repository.EditorRepository;
 import com.baihui.studio.service.ServiceException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
@@ -24,8 +23,10 @@ import java.net.URLEncoder;
 import java.util.Set;
 
 /**
+ * 编辑器服务类
+ *
  * @author xiayouxue
- * @date 2014/4/1 20:44
+ * @date 2014/4/1
  */
 @Service
 public class EditorService {
@@ -44,6 +45,9 @@ public class EditorService {
     @Value(value = "${editor.titlebar.id}")
     private String titlebarId;
 
+    @Value(value = "${editor.com}")
+    private String com;
+
     @Resource
     private EditorRepository editorRepository;
 
@@ -58,7 +62,6 @@ public class EditorService {
     }
 
     public Part[] buildParts(Editor editor) throws FileNotFoundException {
-        String extension = FilenameUtils.getExtension(editor.getFileName());
         return new Part[]{new StringPart("apikey", editor.getApikey()), new StringPart("output", "editor"),
                 new StringPart("persistence", editor.getPersistence()), new StringPart("url", editor.getDownloadUrl()),
                 new StringPart("filepath", editor.getFilePath(), "utf-8"),
@@ -110,5 +113,13 @@ public class EditorService {
 
     public void setTitlebarId(String titlebarId) {
         this.titlebarId = titlebarId;
+    }
+
+    public String getCom() {
+        return com;
+    }
+
+    public void setCom(String com) {
+        this.com = com;
     }
 }

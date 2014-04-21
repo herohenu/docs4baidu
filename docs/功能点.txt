@@ -11,3 +11,5 @@
 2.zoho api
 ->
 
+#keytool -import -alias baidu -file C:\Users\xiayouxue\Desktop\baidu.cer -keystore E:\project\company\docs4baidu-2.0\src\main\resources\com\baihui\baidu\trusthost
+#keytool -import -alias baidu -file /home/resin/webapps/docs4baidu/WEB-INF/classes/com/baihui/baidu/baidu.cer -keystore /home/resin/webapps/docs4baidu/WEB-INF/classes/com/baihui/baidu/trusthost

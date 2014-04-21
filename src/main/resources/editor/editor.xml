@@ -11,8 +11,8 @@
 
 
     <bean id="zohoWriterEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.zoho}"/>
-        <property name="type" value="${eidtor.type.writer}"/>
+        <property name="com" value="${editor.com.zoho}"/>
+        <property name="type" value="${editor.type.writer}"/>
         <property name="serverUrl" value="${editor.zoho.writer.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
         <property name="formats" value="${editor.writer.formats}"/>
@@ -22,8 +22,8 @@
     </bean>
 
     <bean id="zohoSheetEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.zoho}"/>
-        <property name="type" value="${eidtor.type.sheet}"/>
+        <property name="com" value="${editor.com.zoho}"/>
+        <property name="type" value="${editor.type.sheet}"/>
         <property name="serverUrl" value="${editor.zoho.sheet.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
         <property name="formats" value="${editor.sheet.formats}"/>
@@ -33,8 +33,8 @@
     </bean>
 
     <bean id="zohoShowEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.zoho}"/>
-        <property name="type" value="${eidtor.type.show}"/>
+        <property name="com" value="${editor.com.zoho}"/>
+        <property name="type" value="${editor.type.show}"/>
         <property name="serverUrl" value="${editor.zoho.show.serverUrl}"/>
         <property name="apikey" value="${editor.zoho.apikey}"/>
         <property name="formats" value="${editor.show.formats}"/>
@@ -44,8 +44,8 @@
     </bean>
 
     <bean id="baihuiWriterEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.baihui}"/>
-        <property name="type" value="${eidtor.type.writer}"/>
+        <property name="com" value="${editor.com.baihui}"/>
+        <property name="type" value="${editor.type.writer}"/>
         <property name="serverUrl" value="${editor.baihui.writer.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
         <property name="formats" value="${editor.writer.formats}"/>
@@ -55,8 +55,8 @@
     </bean>
 
     <bean id="baihuiSheetEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.baihui}"/>
-        <property name="type" value="${eidtor.type.sheet}"/>
+        <property name="com" value="${editor.com.baihui}"/>
+        <property name="type" value="${editor.type.sheet}"/>
         <property name="serverUrl" value="${editor.baihui.sheet.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
         <property name="formats" value="${editor.sheet.formats}"/>
@@ -66,8 +66,8 @@
     </bean>
 
     <bean id="baihuiShowEditor" class="com.baihui.editor.entity.Editor">
-        <property name="com" value="${eidtor.com.baihui}"/>
-        <property name="type" value="${eidtor.type.show}"/>
+        <property name="com" value="${editor.com.baihui}"/>
+        <property name="type" value="${editor.type.show}"/>
         <property name="serverUrl" value="${editor.baihui.show.serverUrl}"/>
         <property name="apikey" value="${editor.baihui.apikey}"/>
         <property name="formats" value="${editor.show.formats}"/>

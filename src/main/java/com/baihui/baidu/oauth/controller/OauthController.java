@@ -5,25 +5,20 @@ import com.baihui.baidu.oauth.service.OauthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 
 /**
  * 百度开放授权接口控制器
  *
  * @author xiayouxue
- * @date 2014/4/2 15:32
+ * @date 2014/4/2
  */
 @Controller
 @RequestMapping(value = "/baidu/oauth")
