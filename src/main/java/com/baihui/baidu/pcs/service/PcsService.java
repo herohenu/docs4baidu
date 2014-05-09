@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -47,7 +48,7 @@ public class PcsService {
      * 上传文件至百度服务器
      */
     public String upload(String token, String path, Part[] parts) throws IOException, NoSuchAlgorithmException, KeyManagementException {
-        String uploadUrl = getUploadUrl(token, path);
+        String uploadUrl = getUploadUrl(token, URLEncoder.encode(path, "utf-8"));
         logger.debug("\t上传文件至百度服务器，URL={}", uploadUrl);
 
         MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();

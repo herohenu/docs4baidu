@@ -5,14 +5,10 @@ import com.baihui.baidu.pcs.service.PcsService;
 import com.baihui.editor.entity.Editor;
 import com.baihui.editor.service.EditorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.htmlparser.util.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +25,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,8 +57,12 @@ public class BaiduyunEditorController {
      */
     @RequestMapping(value = "/editor/baidu", method = {RequestMethod.GET}, params = {"method=open"})
     public String open(@RequestParam(value = "path") String path,
+                       @RequestParam(value = "iframe", defaultValue = "false") Boolean iframe,
                        @ModelAttribute(value = "token") String token,
                        Model model) throws IOException, ParserException {
+        if (!iframe) {
+            return "/docs4baidu/iframe";
+        }
         String com = editorService.getCom();
         logger.info("使用{}编辑器打开文件，path={}", com, path);
         String extension = FilenameUtils.getExtension(path);
@@ -72,12 +70,12 @@ public class BaiduyunEditorController {
         String encodePath = URLEncoder.encode(path, "utf-8");
         editor.setFileName(FilenameUtils.getName(path));
         editor.setFormat(extension);
-        editor.setDownloadUrl(pcsService.getDownloadUrl(token, path)); //无需编码
+        editor.setDownloadUrl(pcsService.getDownloadUrl(token, encodePath)); //无需编码
         editor.setSaveUrl(pcsService.getUploadUrl(token, encodePath)); //需要编码
         editor.setSaveUrl(editorService.getSaveUrl(token, encodePath));
         logger.info("\t编辑器详情={}", new ObjectMapper().writeValueAsString(editor));
         model.addAttribute("editor", editor);
-        return "docs4baidu/form";
+        return "/docs4baidu/form";
     }
 
     /**
