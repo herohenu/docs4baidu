@@ -20,6 +20,7 @@ public class IndexController {
     public String index(Model model) {
         Map<String, String> fileMap = new LinkedHashMap<String, String>();
         fileMap.put("百度网盘对接", "/editor/baidu");
+        fileMap.put("文件访问信息列表", "/fileview/list");
         fileMap.put("编辑器", "/editor");
         fileMap.put("文件管理", "/file");
         fileMap.put("百度权限->文件", "/baidu/pcs");

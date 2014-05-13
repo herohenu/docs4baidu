@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="com.baihui">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -20,48 +18,56 @@
     <import resource="classpath:editor/editor.xml"/>
 
     <bean class="com.baihui.studio.store.ApplicationInitializingBean"/>
-    <!--
-
-        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
-            <property name="driverClassName" value="${jdbc.driver}"/>
-            <property name="url" value="${jdbc.url}"/>
-            <property name="username" value="${jdbc.username}"/>
-            <property name="password" value="${jdbc.password}"/>
-            <property name="defaultAutoCommit" value="false"/>
-        </bean>
-
-        &lt;!&ndash; Jpa Entity Manager 配置 &ndash;&gt;
-        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-            <property name="dataSource" ref="dataSource"/>
-            <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
-            <property name="packagesToScan" value="com.baihui"/>
-            <property name="jpaProperties">
-                <props>
-                    &lt;!&ndash; 命名规则 My_NAME->MyName &ndash;&gt;
-                    <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
-                </props>
-            </property>
-        </bean>
-
-        <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-            <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
-        </bean>
-
-        &lt;!&ndash; Spring Data Jpa配置 &ndash;&gt;
-        <jpa:repositories base-package="com.baihui" transaction-manager-ref="transactionManager"
-                          entity-manager-factory-ref="entityManagerFactory"/>
-
-        &lt;!&ndash; Jpa 事务配置 &ndash;&gt;
-        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-            <property name="entityManagerFactory" ref="entityManagerFactory"/>
-        </bean>
-
-        &lt;!&ndash; 使用annotation定义事务 &ndash;&gt;
-        <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-
-        &lt;!&ndash; JSR303 Validator定义 &ndash;&gt;
-        <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
-
+<!--
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="maxWait" value="10000"/>
+    </bean>
     -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- 设置Hibernate的SessionFactory, 使用支持注解的SessionFactoryBean -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+                <prop key="hibernate.connection.release_mode">auto</prop>
+                <prop key="hibernate.autoReconnect">true</prop>
+                <prop key="hibernate.default_schema">docs4baidu</prop>
+                <!-- 允许查询缓存 -->
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+            </props>
+        </property>
+        <!-- 扫描entity的目录 -->
+        <property name="packagesToScan">
+            <list>
+                <value>com.baihui.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 处理blob -->
+    <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true"></bean>
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 使用annotation定义事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
 </beans>
