@@ -46,6 +46,14 @@
         <property name="maxUploadSize" value="10000000"/>
     </bean>
 
+    <!-- 将Controller抛出的异常转到特定View -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Throwable">forward:/error/adapter</prop>
+            </props>
+        </property>
+    </bean>
 
 
 

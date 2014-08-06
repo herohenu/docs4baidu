@@ -10,9 +10,7 @@
 <body>
 <fieldset>
     <legend>doc</legend>
-    <form method="POST"
-          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">上传文件: <input type="file" name="content" size="38">
+    <form method="POST" action="https://xiexie.baihui.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">上传文件: <input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.doc">
         <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
         <input type="hidden" name="id" value="12345678">
@@ -20,9 +18,7 @@
         <input type="hidden" name="persistence" value="false">
         <input type="submit" value="EditDoc" name="submit">
     </form>
-    <form method="POST"
-          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="https://exportwriter.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
         <a href="${basePath}/file/temp.doc?method=download">temp.doc</a>
         <input type="hidden" name="url" value="${basePath}/file/temp.doc?method=download">
         <input type="hidden" name="filename" value="temp.doc">
@@ -36,9 +32,7 @@
 
 <fieldset>
     <legend>xls</legend>
-    <form method="POST"
-          action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="https://sheet.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
         上传文件：<input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.xls">
         <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
@@ -47,9 +41,7 @@
         <input type="hidden" name="persistence" value="false">
         <input type="submit" value="EditDoc" name="submit">
     </form>
-    <form method="POST"
-          action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="https://sheet.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
         <a href="${basePath}/file/temp.xls?method=download">temp.xls</a>
         <input type="hidden" name="url" value="${basePath}/file/temp.xls?method=download">
         <input type="hidden" name="filename" value="temp.xls">
@@ -63,9 +55,7 @@
 
 <fieldset>
     <legend>ppt</legend>
-    <form method="POST"
-          action="https://show.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="https://show.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
         上传文件： <input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.ppt">
         <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
@@ -75,13 +65,11 @@
         <input type="hidden" name="persistence" value="false">
         <input type="submit" value="EditDoc" name="submit">
     </form>
-    <form method="POST"
-          action="https://show.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-          enctype="multipart/form-data" target="_blank">
+    <form method="POST" action="https://show.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
         <a href="${basePath}/file/temp.ppt?method=download">temp.ppt</a>
         <input type="hidden" name="filename" value="temp.ppt">
         <input type="hidden" name="url" value="${basePath}/file/temp.ppt?method=download">
-    <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
+        <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
         <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="ppt">
@@ -95,9 +83,7 @@
     <fieldset>
         <legend>本地编辑</legend>
         <div>从本地上传文件到服务端，编辑后导出到本地</div>
-        <form method="post"
-              action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-              enctype="multipart/form-data" target="_blank">
+        <form method="post" action="https://exportwriter.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
             <input type="file" name="content" size="38">
             <input type="text" name="filename" value="temp.doc">
             <%--<input type="text" name="format" value="doc">--%>
@@ -116,9 +102,7 @@
     <fieldset>
         <legend>云端编辑</legend>
         <div>指定一个云端地址，编辑后保存到云端</div>
-        <form method="post"
-              action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
-              enctype="multipart/form-data" target="_blank">
+        <form method="post" action="https://exportwriter.zoho.com/remotedoc.im?apikey=b55679812fe378dc4c288a47dbced340&output=editor" enctype="multipart/form-data" target="_blank">
             <input type="text" name="url" value="${downloadUrl}" size="120">
             <input type="text" name="filename" value="temp">
             <input type="text" name="format" value="doc">

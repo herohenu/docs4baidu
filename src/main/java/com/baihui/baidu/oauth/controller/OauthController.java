@@ -5,13 +5,14 @@ import com.baihui.baidu.oauth.service.OauthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -34,27 +35,20 @@ public class OauthController {
      * 获取token
      */
     @RequestMapping(value = "/token")
-    public String token(@RequestParam(value = "code") String code,
-                        HttpSession session) throws IOException {
+    public String token(String code, @RequestParam(value = "redirect_uri") String redirectUri, ModelMap modelMap) throws IOException {
         logger.info("获取token");
-        logger.info("\t取得授权码，authcode={}", code);
-        session.setAttribute(Constant.VS_BAIDU_OAUTH_AUTHCODE, code);
+        logger.info("\t授权码={}，业务请求={}", code, redirectUri);
 
-        String accessTokenUrl = oauthService.getAccessTokenUrl(code);
+        String tokenRedirectUri = oauthService.getCodeRedirectUri() + "?redirect_uri=" + URLEncoder.encode(redirectUri, "utf-8");
+        String accessTokenUrl = oauthService.getAccessTokenUrl(code, URLEncoder.encode(tokenRedirectUri, "utf-8"));
         logger.info("\t获取token，URL={}", accessTokenUrl);
         Map<String, String> accessToken = oauthService.getAccessToken(accessTokenUrl);
-        session.setAttribute(Constant.VS_BAIDU_OAUTH_TOKEN, accessToken);
-        session.setAttribute(Constant.VS_BAIDU_OAUTH_TOKEN_TOKEN, accessToken.get("access_token"));
-
-        Object url = session.getAttribute(Constant.VS_BAIDU_OAUTH_URL);
-        if (url == null) {
-            String defaultUrl = "/baidu/oauth/index";
-            logger.info("跳转至默认视图，URL={}", defaultUrl);
-            return defaultUrl;
-        }
-        logger.info("跳转至原业务视图，URL={}", url);
-
-        return "redirect:" + url;
+        modelMap.addAttribute(Constant.VS_BAIDU_OAUTH_TOKEN, accessToken);
+        modelMap.addAttribute(Constant.VS_BAIDU_OAUTH_TOKEN_TOKEN, accessToken.get("access_token"));
+        logger.info("redirectUri={}", redirectUri);
+        String forward = "forward:" + "/editor/baidu" + redirectUri.substring(redirectUri.indexOf("?")) + "&method=open";
+        logger.info("forward={}", forward);
+        return forward;
     }
 
 

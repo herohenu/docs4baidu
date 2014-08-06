@@ -55,7 +55,7 @@ public class EditorController {
     public String list(Model model) throws UnsupportedEncodingException {
         Map<String, String> links = new LinkedHashMap<String, String>();
         links.put("zoho", "/editor/zoho");
-        links.put("baihui", "/editor/baihui");
+//        links.put("baihui", "/editor/baihui");
         model.addAttribute("links", links);
         return "/editor/index";
     }
@@ -70,6 +70,18 @@ public class EditorController {
         model.addAttribute("basePath", fileService.getBasePath());
         model.addAttribute("downloadUrl", baidu);
         return "/editor/zoho";
+    }
+
+    /**
+     * 转至zoho编辑器页
+     */
+    @RequestMapping(value = "/editor/baihui")
+    public String baihui(Model model) {
+        String local = fileService.getBasePath() + "/file/temp.doc?method=download";
+        String baidu = pcsService.getDownloadUrl("", "/apps/docs4baidu/temp.doc");
+        model.addAttribute("basePath", fileService.getBasePath());
+        model.addAttribute("downloadUrl", baidu);
+        return "/editor/baihui";
     }
 
 

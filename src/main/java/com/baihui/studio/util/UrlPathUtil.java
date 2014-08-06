@@ -1,5 +1,6 @@
 package com.baihui.studio.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -38,6 +39,23 @@ public class UrlPathUtil {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             for (String value : entry.getValue()) {
                 params.append(String.format("&%s=%s", entry.getKey(), value));
+            }
+        }
+        return params.length() > 0 ? params.substring(1) : params.toString();
+    }
+
+    /**
+     * 转换成原始的参数字符串
+     * 1.没有参数，返回空字符串
+     */
+    public static String toStringParams(Map<String, String[]> parameterMap, String... ignores) {
+        StringBuffer params = new StringBuffer();
+
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            for (String value : entry.getValue()) {
+                if (ArrayUtils.contains(ignores, value)) {
+                    params.append(String.format("&%s=%s", entry.getKey(), value));
+                }
             }
         }
         return params.length() > 0 ? params.substring(1) : params.toString();

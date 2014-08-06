@@ -6,12 +6,10 @@ import com.baihui.docs4baidu.fileview.entity.Fileview;
 import com.baihui.docs4baidu.fileview.service.FileviewService;
 import com.baihui.editor.entity.Editor;
 import com.baihui.editor.service.EditorService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.io.FilenameUtils;
-import org.htmlparser.util.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,12 +61,12 @@ public class BaiduyunEditorController {
      */
     @RequestMapping(value = "/editor/baidu", method = {RequestMethod.GET}, params = {"method=open"})
     public String open(@RequestParam(value = "path") String path,
-//                       @RequestParam(value = "iframe", defaultValue = "false") Boolean iframe,
-                       @ModelAttribute(value = "token") String token,
-                       Model model) throws IOException, ParserException {
-//        if (!iframe) {
-//            return "/docs4baidu/iframe";
-//        }
+//                       @ModelAttribute(value = Constant.VS_BAIDU_OAUTH_TOKEN_TOKEN) String token,
+                       HttpServletRequest request,
+                       Model model) throws IOException {
+
+        String token = (String) request.getAttribute(Constant.VS_BAIDU_OAUTH_TOKEN_TOKEN);
+
         String com = editorService.getCom();
         logger.info("使用{}编辑器打开文件，path={}", com, path);
         String extension = FilenameUtils.getExtension(path);
@@ -79,7 +78,7 @@ public class BaiduyunEditorController {
         editor.setDownloadUrl(pcsService.getDownloadUrl(token, encodePath));
         editor.setSaveUrl(pcsService.getUploadUrl(token, encodePath));
         editor.setSaveUrl(editorService.getSaveUrl(token, encodePath));
-        logger.info("\t编辑器详情={}", new ObjectMapper().writeValueAsString(editor));
+        logger.info("\t编辑器详情={}", editor);
         model.addAttribute("editor", editor);
 
         try {
@@ -91,7 +90,7 @@ public class BaiduyunEditorController {
             fileview.setAccesstoken(token);
             fileview.setCreateTime(new Date());
             fileviewService.save(fileview);
-            logger.info("文件访问信息“{}”", new ObjectMapper().writeValueAsString(fileview));
+            logger.info("文件访问信息“{}”", fileview);
             editor.setId(String.valueOf(fileview.getId()));
         } catch (Exception e) {
             logger.error("保存失败", e);

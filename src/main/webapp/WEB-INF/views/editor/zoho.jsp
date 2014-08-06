@@ -5,13 +5,11 @@
 <head>
     <title>ZOHO编辑器管理</title>
     <script src="${ctx}/static/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
-
 </head>
 <body>
 <fieldset>
     <legend>doc</legend>
-    <form method="POST"
-          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+    <form method="POST" action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
           enctype="multipart/form-data" target="_blank">上传文件: <input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.doc">
         <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
@@ -20,8 +18,7 @@
         <input type="hidden" name="persistence" value="false">
         <input type="submit" value="EditDoc" name="submit">
     </form>
-    <form method="POST"
-          action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+    <form method="POST" action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
           enctype="multipart/form-data" target="_blank">
         <a href="${basePath}/file/temp.doc?method=download">temp.doc</a>
         <input type="hidden" name="url" value="${basePath}/file/temp.doc?method=download">
@@ -36,8 +33,7 @@
 
 <fieldset>
     <legend>xls</legend>
-    <form method="POST"
-          action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
+    <form method="POST" action="https://sheet.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
           enctype="multipart/form-data" target="_blank">
         上传文件：<input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.xls">
@@ -81,7 +77,7 @@
         <a href="${basePath}/file/temp.ppt?method=download">temp.ppt</a>
         <input type="hidden" name="filename" value="temp.ppt">
         <input type="hidden" name="url" value="${basePath}/file/temp.ppt?method=download">
-    <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
+        <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
         <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="ppt">

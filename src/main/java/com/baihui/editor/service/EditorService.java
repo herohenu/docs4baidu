@@ -8,7 +8,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +57,7 @@ public class EditorService {
                 return editor;
             }
         }
-        throw new ServiceException(String.format("没有找到公司%s、文件扩展名%s对应的编辑器！", com, extension));
+        throw new ServiceException(String.format("不支持的文件扩展名%s！", extension));
     }
 
     public Part[] buildParts(Editor editor) throws FileNotFoundException {

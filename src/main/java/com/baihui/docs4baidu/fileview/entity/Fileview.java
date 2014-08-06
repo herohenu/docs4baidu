@@ -1,32 +1,21 @@
 package com.baihui.docs4baidu.fileview.entity;
 
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name = "FILEVIEW")
 public class Fileview implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "PATH")
     private String path;
 
-    @Column(name = "SIZE")
     private Long size;
 
-    @Column(name = "TYPE")
     private String type;
 
-    @Column(name = "ACCESSTOKEN")
     private String accesstoken;
 
-    @Column(name = "CREATE_TIME")
     private Date createTime;
 
     public Fileview() {
