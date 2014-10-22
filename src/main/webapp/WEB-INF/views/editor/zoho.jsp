@@ -12,7 +12,7 @@
     <form method="POST" action="https://exportwriter.zoho.com/remotedoc.im?apikey=27b07f3e314700b408cc13a1632eb84c&output=editor"
           enctype="multipart/form-data" target="_blank">上传文件: <input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.doc">
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="doc">
         <input type="hidden" name="persistence" value="false">
@@ -23,7 +23,7 @@
         <a href="${basePath}/file/temp.doc?method=download">temp.doc</a>
         <input type="hidden" name="url" value="${basePath}/file/temp.doc?method=download">
         <input type="hidden" name="filename" value="temp.doc">
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="doc">
         <input type="hidden" name="persistence" value="false">
@@ -37,7 +37,7 @@
           enctype="multipart/form-data" target="_blank">
         上传文件：<input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.xls">
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="xls">
         <input type="hidden" name="persistence" value="false">
@@ -49,7 +49,7 @@
         <a href="${basePath}/file/temp.xls?method=download">temp.xls</a>
         <input type="hidden" name="url" value="${basePath}/file/temp.xls?method=download">
         <input type="hidden" name="filename" value="temp.xls">
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="xls">
         <input type="hidden" name="persistence" value="false">
@@ -64,8 +64,8 @@
           enctype="multipart/form-data" target="_blank">
         上传文件： <input type="file" name="content" size="38">
         <input type="hidden" name="filename" value="temp.ppt">
-        <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <%--<input type="hidden" name="saveurl" value="${basePath}/editor/save">--%>
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="ppt">
         <input type="hidden" name="persistence" value="false">
@@ -77,8 +77,8 @@
         <a href="${basePath}/file/temp.ppt?method=download">temp.ppt</a>
         <input type="hidden" name="filename" value="temp.ppt">
         <input type="hidden" name="url" value="${basePath}/file/temp.ppt?method=download">
-        <%--<input type="hidden" name="saveurl" value="${basePath}/editor?method=save">--%>
-        <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+        <%--<input type="hidden" name="saveurl" value="${basePath}/editor/save">--%>
+        <input type="hidden" name="saveurl" value="${basePath}/editor/save">
         <input type="hidden" name="id" value="12345678">
         <input type="hidden" name="format" value="ppt">
         <input type="hidden" name="persistence" value="false">
@@ -103,7 +103,7 @@
                 <option value="ppt">ppt</option>
             </select>
             <input type="submit" name="submit" value="编辑">
-            <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+            <input type="hidden" name="saveurl" value="${basePath}/editor/save">
             <input type="hidden" name="id" value="12345678doc">
             <input type="hidden" name="persistence" value="false">
         </form>
@@ -119,7 +119,7 @@
             <input type="text" name="filename" value="temp">
             <input type="text" name="format" value="doc">
             <input type="submit" name="submit" value="编辑">
-            <input type="hidden" name="saveurl" value="${basePath}/editor?method=save">
+            <input type="hidden" name="saveurl" value="${basePath}/editor/save">
             <input type="hidden" name="id" value="12345678doc">
             <input type="hidden" name="persistence" value="false">
         </form>

@@ -43,7 +43,7 @@ public class ApplicationInitializingBean implements InitializingBean {
             logger.info("\t创建上传文件夹！");
             if (success == false) {
                 logger.error("创建上传文件夹失败！"); //TODO 失败的具体处理。停止服务器|让当前应用停止|屏蔽涉及上传文件部分内容
-                throw new Error("创建上传文件夹失败！");
+//                throw new Error("创建上传文件夹失败！");
             } else {
                 logger.info("创建上传文件夹成功！");
                 return;
